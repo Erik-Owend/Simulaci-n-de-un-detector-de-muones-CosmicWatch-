@@ -1,1 +1,0 @@
-# Simulaci-n-de-un-detector-de-muones-CosmicWatch-
