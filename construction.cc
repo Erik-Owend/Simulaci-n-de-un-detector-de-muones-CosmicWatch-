@@ -14,9 +14,9 @@ fMessenger->DeclareProperty("isScintillator", isScintillator, "Toggle Scintillat
 
     DefineMaterials();
 
-    xWorld = 0.5*m;
-    yWorld = 0.5*m;
-    zWorld = 0.5*m;
+    xWorld = 0.4*m/2;
+    yWorld = 0.4*m/2;
+    zWorld = 0.4*m/2;
 
     isCherenkov = false;
     isScintillator = true;
@@ -46,11 +46,15 @@ void MyDetectorConstruction::DefineMaterials()
 
     worldMat = nist->FindOrBuildMaterial("G4_AIR");
 
-    G4double energy[2] = {1.239841939*eV/0.9, 1.239841939*eV/0.2};
+    G4double energy[5] = {1.239841939*eV/0.48, 1.239841939*eV/0.44, 1.239841939*eV/0.43, 1.239841939*eV/0.42, 1.239841939*eV/0.38};
     G4double rindexAerogel[2] = {1.1, 1.1};
     G4double rindexWorld[2] = {1.0, 1.0};
-    G4double rindexNaI[2] = {1.78, 1.78};
-    G4double reflectivity[2] = {1.0, 1.0};
+    //G4double rindexNaI[2] = {1.78, 1.78};
+    G4double rindexScint[5] = {1.60, 1.59, 1.58, 1.57, 1.56};
+    G4double absorLenScint[5] = {160*cm, 160*cm, 160*cm, 160*cm, 160*cm};
+	G4double decaytScint = 2.4*ns;
+	G4double LYieldScint = 10./keV;
+    G4double reflectivity[2] = {0.98, 0.98};
 
     G4MaterialPropertiesTable *mptAerogel = new G4MaterialPropertiesTable();
     mptAerogel->AddProperty("RINDEX", energy, rindexAerogel, 2);
@@ -58,25 +62,40 @@ void MyDetectorConstruction::DefineMaterials()
     Aerogel->SetMaterialPropertiesTable(mptAerogel);
 
     G4MaterialPropertiesTable *mptWorld = new G4MaterialPropertiesTable();
-    mptWorld->AddProperty("RINDEX", energy, rindexWorld, 2);
+    mptWorld->AddProperty("RINDEX", energy, rindexWorld, 5);
 
-    Na = nist->FindOrBuildElement("Na");
-    I = nist->FindOrBuildElement("I");
-    NaI = new G4Material("NaI", 3.67*g/cm3, 2);
-    NaI->AddElement(Na, 1);
-    NaI->AddElement(I, 1);
+    //Na = nist->FindOrBuildElement("Na");
+    //I = nist->FindOrBuildElement("I");
+    //NaI = new G4Material("NaI", 3.67*g/cm3, 2);
+    //NaI->AddElement(Na, 1);
+    //NaI->AddElement(I, 1);
 
-    G4double fraction[2] = {1.0, 1.0};
+	Scint = nist->FindOrBuildMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
 
-    G4MaterialPropertiesTable *mptNaI = new G4MaterialPropertiesTable();
-    mptNaI->AddProperty("RINDEX", energy, rindexNaI, 2);
-    mptNaI->AddProperty("FASTCOMPONENT", energy, fraction, 2, true);
-    mptNaI->AddConstProperty("SCINTILLATIONYIELD", 38./keV);
-    mptNaI->AddConstProperty("RESOLUTIONSCALE", 1.0);
-    mptNaI->AddConstProperty("FASTTIMECONSTANT", 250*ns, true);
-    mptNaI->AddConstProperty("YIELDRATIO", 1., true);
+    //G4double fraction[2] = {1.0, 1.0};
 
-    NaI->SetMaterialPropertiesTable(mptNaI);
+    G4double spectScint[5] = {0.18, 0.8, 1.0, 0.85, 0.07};
+
+    //G4MaterialPropertiesTable *mptNaI = new G4MaterialPropertiesTable();
+    //mptNaI->AddProperty("RINDEX", energy, rindexNaI, 2);
+    //mptNaI->AddProperty("FASTCOMPONENT", energy, fraction, 2, true);
+    //mptNaI->AddConstProperty("SCINTILLATIONYIELD", 38./keV);
+    //mptNaI->AddConstProperty("RESOLUTIONSCALE", 1.0);
+    //mptNaI->AddConstProperty("FASTTIMECONSTANT", 250*ns, true);
+    //mptNaI->AddConstProperty("YIELDRATIO", 1., true);
+
+    G4MaterialPropertiesTable *mptScint = new G4MaterialPropertiesTable();
+	mptScint->AddProperty("RINDEX", energy, rindexScint, 5);
+	mptScint->AddProperty("ABSLENGTH", energy, absorLenScint, 5, false, true);
+	mptScint->AddProperty("SCINTILLATIONCOMPONENT1", energy, spectScint, 5);
+	mptScint->AddConstProperty("SCINTILLATIONYIELD", LYieldScint);
+	mptScint->AddConstProperty("RESOLUTIONSCALE", 0.0);
+	mptScint->AddConstProperty("SCINTILLATIONTIMECONSTANT1", decaytScint);
+	mptScint->AddConstProperty("SCINTILLATIONYIELD1", 1.);
+
+    //NaI->SetMaterialPropertiesTable(mptNaI);
+
+	Scint->SetMaterialPropertiesTable(mptScint);
 
     worldMat->SetMaterialPropertiesTable(mptWorld);
 
@@ -88,9 +107,44 @@ void MyDetectorConstruction::DefineMaterials()
 
     G4MaterialPropertiesTable *mptMirror = new G4MaterialPropertiesTable();
     
-    mptMirror->AddProperty("REFLECTIVITY", energy, reflectivity, 2);
+    mptMirror->AddProperty("REFLECTIVITY", energy, reflectivity, 5);
 
     mirrorSurface->SetMaterialPropertiesTable(mptMirror);
+
+	//Mirror Scint
+	mirrorCoatScint = new G4OpticalSurface("mirrorCoatScint");
+
+	mirrorCoatScint->SetType(dielectric_metal);
+	mirrorCoatScint->SetFinish(ground);
+	mirrorCoatScint->SetModel(unified);
+
+    G4double reflectivityScint[2] = {0.98, 0.98};
+
+	G4MaterialPropertiesTable *mptMirrorScint = new G4MaterialPropertiesTable();
+	mptMirrorScint->AddProperty("REFLECTIVITY", energy, reflectivityScint, 5);
+	
+	mirrorCoatScint->SetMaterialPropertiesTable(mptMirrorScint);
+
+	//Mirror SiPM
+	mirrorCoatSiPM = new G4OpticalSurface("mirrorCoatSiPM");
+
+	mirrorCoatSiPM->SetType(dielectric_dielectric);
+	mirrorCoatSiPM->SetFinish(groundfrontpainted);
+	mirrorCoatSiPM->SetModel(unified);
+
+	G4double reflectivitySiPM[2] = {0.0, 0.0};
+
+	G4MaterialPropertiesTable *mptMirrorSiPM = new G4MaterialPropertiesTable();
+	mptMirrorSiPM->AddProperty("REFLECTIVITY", energy, reflectivitySiPM, 5);
+
+	mirrorCoatSiPM->SetMaterialPropertiesTable(mptMirrorSiPM);
+
+	//Boundary Scint and SiPM
+	opBoundary = new G4OpticalSurface("Boundary");
+
+	opBoundary->SetType(dielectric_dielectric);
+	opBoundary->SetFinish(Rough_LUT);
+	opBoundary->SetModel(unified);
 }
 
 void MyDetectorConstruction::ConstructCherenkov()
@@ -126,19 +180,25 @@ void MyDetectorConstruction::ConstructCherenkov()
 
 void MyDetectorConstruction::ConstructScintillator()
 {
-    solidScintillator = new G4Box("solidScintillator", 5*cm, 5*cm, 1*cm);
+    solidScintillator = new G4Box("solidScintillator", 5*cm/2, 5*cm/2, 1*cm/2);
 
-    logicScintillator = new G4LogicalVolume(solidScintillator, NaI, "logicalScintillator");
+    logicScintillator = new G4LogicalVolume(solidScintillator, Scint, "logicalScintillator");
 
-    solidDetector = new G4Box("solidDetector", 6*mm, 6*mm, 1*mm);
+    solidDetector = new G4Box("solidDetector", 6*mm/2, 6*mm/2, 1*mm/2);
 
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
 
     fScoringVolume = logicScintillator;
 
-    physScintillator = new G4PVPlacement(0, G4ThreeVector(0., 0., 30*cm), logicScintillator, "physScintillator", logicWorld, false, 0, true);
+    physScintillator = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicScintillator, "physScintillator", logicWorld, false, 0, true);
 
-    physDetector = new G4PVPlacement(0, G4ThreeVector(0., 0., 30.9*cm), logicDetector, "physDetector", logicWorld, false, 0, true);
+    physDetector = new G4PVPlacement(0, G4ThreeVector(0., 0., -1.1*cm/2), logicDetector, "physDetector", logicWorld, false, 0, true);
+
+    G4LogicalSkinSurface *skin = new G4LogicalSkinSurface("skin", logicScintillator, mirrorCoatScint);
+
+    G4LogicalSkinSurface *skinSiPM = new G4LogicalSkinSurface("skinSiPM", logicDetector, mirrorCoatSiPM);
+
+    G4LogicalBorderSurface* SiPMSurface = new G4LogicalBorderSurface("SiPMSurface", physScintillator, physDetector, opBoundary);
 }
 
 G4VPhysicalVolume *MyDetectorConstruction::Construct()
