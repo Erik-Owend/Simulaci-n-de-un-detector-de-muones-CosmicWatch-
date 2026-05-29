@@ -4,7 +4,7 @@ MyRunAction::MyRunAction()
 {
     G4AnalysisManager *man = G4AnalysisManager::Instance();    
 
-    man->CreateNtuple("Photons", "Photons");
+    /*man->CreateNtuple("Photons", "Photons");
     man->CreateNtupleIColumn("fEvent");
     man->CreateNtupleDColumn("fX");
     man->CreateNtupleDColumn("fY");
@@ -17,11 +17,16 @@ MyRunAction::MyRunAction()
     man->CreateNtupleDColumn("fX");
     man->CreateNtupleDColumn("fY");
     man->CreateNtupleDColumn("fZ");
-    man->FinishNtuple(1);
+    man->FinishNtuple(1);*/
 
     man->CreateNtuple("Scoring", "Scoring");
     man->CreateNtupleDColumn("fEdep");
-    man->FinishNtuple(2);
+    man->CreateNtupleDColumn("fX");
+    man->CreateNtupleDColumn("fY");
+    man->CreateNtupleDColumn("fZ");
+    man->CreateNtupleDColumn("fTheta");
+    man->CreateNtupleDColumn("fPhi");
+    man->FinishNtuple(0);
 }
 
 MyRunAction::~MyRunAction()

@@ -6,10 +6,19 @@
 /gps/pos/shape Sphere
 /gps/pos/centre 0 0 0 cm
 /gps/pos/radius 10 cm
-/gps/ang/type focused
+/gps/ang/type user
+/gps/hist/type theta
+/gps/hist/point 0.0   0.0
+/gps/hist/point 0.2   0.19
+/gps/hist/point 0.4   0.33
+/gps/hist/point 0.6   0.36
+/gps/hist/point 0.8   0.27
+/gps/hist/point 1.0   0.0
+/gps/ang/mintheta 0 deg
+/gps/ang/maxtheta 90 deg
 /gps/ene/type Mono
 /gps/ene/mono 1 GeV
 
 #/run/particle/dumpOrderingParam
 
-/run/beamOn 1000
+/run/beamOn 1000000

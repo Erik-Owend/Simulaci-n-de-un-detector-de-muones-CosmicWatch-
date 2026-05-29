@@ -85,13 +85,13 @@ void MyDetectorConstruction::DefineMaterials()
     //mptNaI->AddConstProperty("YIELDRATIO", 1., true);
 
     G4MaterialPropertiesTable *mptScint = new G4MaterialPropertiesTable();
-	mptScint->AddProperty("RINDEX", energy, rindexScint, 5);
-	mptScint->AddProperty("ABSLENGTH", energy, absorLenScint, 5, false, true);
-	mptScint->AddProperty("SCINTILLATIONCOMPONENT1", energy, spectScint, 5);
-	mptScint->AddConstProperty("SCINTILLATIONYIELD", LYieldScint);
-	mptScint->AddConstProperty("RESOLUTIONSCALE", 0.0);
-	mptScint->AddConstProperty("SCINTILLATIONTIMECONSTANT1", decaytScint);
-	mptScint->AddConstProperty("SCINTILLATIONYIELD1", 1.);
+	//mptScint->AddProperty("RINDEX", energy, rindexScint, 5);
+	//mptScint->AddProperty("ABSLENGTH", energy, absorLenScint, 5, false, true);
+	//mptScint->AddProperty("SCINTILLATIONCOMPONENT1", energy, spectScint, 5);
+	//mptScint->AddConstProperty("SCINTILLATIONYIELD", LYieldScint);
+	//mptScint->AddConstProperty("RESOLUTIONSCALE", 0.0);
+	//mptScint->AddConstProperty("SCINTILLATIONTIMECONSTANT1", decaytScint);
+	//mptScint->AddConstProperty("SCINTILLATIONYIELD1", 1.);
 
     //NaI->SetMaterialPropertiesTable(mptNaI);
 
@@ -184,21 +184,21 @@ void MyDetectorConstruction::ConstructScintillator()
 
     logicScintillator = new G4LogicalVolume(solidScintillator, Scint, "logicalScintillator");
 
-    solidDetector = new G4Box("solidDetector", 6*mm/2, 6*mm/2, 1*mm/2);
+    //solidDetector = new G4Box("solidDetector", 6*mm/2, 6*mm/2, 1*mm/2);
 
-    logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
+    //logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
 
     fScoringVolume = logicScintillator;
 
     physScintillator = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicScintillator, "physScintillator", logicWorld, false, 0, true);
 
-    physDetector = new G4PVPlacement(0, G4ThreeVector(0., 0., -1.1*cm/2), logicDetector, "physDetector", logicWorld, false, 0, true);
+    //physDetector = new G4PVPlacement(0, G4ThreeVector(0., 0., -1.1*cm/2), logicDetector, "physDetector", logicWorld, false, 0, true);
 
-    G4LogicalSkinSurface *skin = new G4LogicalSkinSurface("skin", logicScintillator, mirrorCoatScint);
+    //G4LogicalSkinSurface *skin = new G4LogicalSkinSurface("skin", logicScintillator, mirrorCoatScint);
 
-    G4LogicalSkinSurface *skinSiPM = new G4LogicalSkinSurface("skinSiPM", logicDetector, mirrorCoatSiPM);
+    //G4LogicalSkinSurface *skinSiPM = new G4LogicalSkinSurface("skinSiPM", logicDetector, mirrorCoatSiPM);
 
-    G4LogicalBorderSurface* SiPMSurface = new G4LogicalBorderSurface("SiPMSurface", physScintillator, physDetector, opBoundary);
+    //G4LogicalBorderSurface* SiPMSurface = new G4LogicalBorderSurface("SiPMSurface", physScintillator, physDetector, opBoundary);
 }
 
 G4VPhysicalVolume *MyDetectorConstruction::Construct()
@@ -220,8 +220,8 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 
 void MyDetectorConstruction::ConstructSDandField()
 {
-    MySensitiveDetector *sensDet = new MySensitiveDetector("SensitiveDetector");
+    //MySensitiveDetector *sensDet = new MySensitiveDetector("SensitiveDetector");
 
-    if(logicDetector != NULL)
-        logicDetector->SetSensitiveDetector(sensDet);
+    //if(logicDetector != NULL)
+        //logicDetector->SetSensitiveDetector(sensDet);
 }

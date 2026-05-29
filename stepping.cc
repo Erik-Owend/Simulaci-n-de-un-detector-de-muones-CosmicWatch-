@@ -21,4 +21,20 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
 
     G4double edep = step->GetTotalEnergyDeposit();
     fEventAction->AddEdep(edep);
+
+    if(step->GetPreStepPoint()->GetStepStatus() == fGeomBoundary)
+    {
+        G4StepPoint *point = step->GetPreStepPoint();
+
+        G4ThreeVector pos = point->GetPosition();
+
+        G4ThreeVector dir = point->GetMomentumDirection();
+
+        fEventAction->SetX(pos.x());
+        fEventAction->SetY(pos.y());
+        fEventAction->SetZ(pos.z());
+
+        fEventAction->SetTheta(dir.theta());
+        fEventAction->SetPhi(dir.phi());
+    }
 }

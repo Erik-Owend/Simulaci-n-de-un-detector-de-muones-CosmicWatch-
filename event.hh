@@ -19,8 +19,15 @@ public:
 
     void AddEdep(G4double edep) { fEdep += edep; }
 
+    void SetX(G4double x) {fX = x;}
+    void SetY(G4double y) {fY = y;}
+    void SetZ(G4double z) {fZ = z;}
+
+    void SetTheta(G4double theta) {fTheta = theta;}
+    void SetPhi(G4double phi) {fPhi = phi;}
+
 private:
-    G4double fEdep;
+    G4double fEdep, fX, fY, fZ, fTheta, fPhi;
 };
 
 #endif
