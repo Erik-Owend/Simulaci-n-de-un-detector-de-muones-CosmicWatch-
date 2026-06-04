@@ -5,20 +5,32 @@
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0 0 0 cm
-/gps/pos/radius 10 cm
-/gps/ang/type user
-/gps/hist/type theta
-/gps/hist/point 0.0   0.0
-/gps/hist/point 0.2   0.19
-/gps/hist/point 0.4   0.33
-/gps/hist/point 0.6   0.36
-/gps/hist/point 0.8   0.27
-/gps/hist/point 1.0   0.0
-/gps/ang/mintheta 0 deg
-/gps/ang/maxtheta 90 deg
+/gps/pos/radius 20 cm
 /gps/ene/type Mono
 /gps/ene/mono 1 GeV
+/gps/ang/type user
+/gps/hist/type theta
+/gps/hist/point 0.0392699 0.092033
+/gps/hist/point 0.11781 0.273045
+/gps/hist/point 0.19635 0.441198
+/gps/hist/point 0.274889 0.59039
+/gps/hist/point 0.353429 0.716355
+/gps/hist/point 0.431969 0.814075
+/gps/hist/point 0.510509 0.875174
+/gps/hist/point 0.589049 0.903367
+/gps/hist/point 0.667588 0.897453
+/gps/hist/point 0.746128 0.860627
+/gps/hist/point 0.824668 0.797552
+/gps/hist/point 0.903208 0.708302
+/gps/hist/point 0.981748 0.604058
+/gps/hist/point 1.06029 0.489613
+/gps/hist/point 1.13883 0.375879
+/gps/hist/point 1.21737 0.265915
+/gps/hist/point 1.29591 0.167478
+/gps/hist/point 1.37445 0.089172
+/gps/hist/point 1.45299 0.033459
+/gps/hist/point 1.53153 0.004855
 
 #/run/particle/dumpOrderingParam
 
-/run/beamOn 1000000
+/run/beamOn 10000000

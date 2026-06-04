@@ -34,8 +34,8 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     man->FillNtupleDColumn(0, 2, fY/cm);
     man->FillNtupleDColumn(0, 3, fZ/cm);
 
-    man->FillNtupleDColumn(0, 4, fTheta/deg);
-    man->FillNtupleDColumn(0, 5, fPhi/deg);
+    man->FillNtupleDColumn(0, 4, fTheta);
+    man->FillNtupleDColumn(0, 5, fPhi);
 
     man->AddNtupleRow(0);
 }   
