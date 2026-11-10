@@ -1,4 +1,4 @@
-/run/numberOfThreads 16
+/run/numberOfThreads 4
 /run/initialize
 /vis/open OGL
 /vis/viewer/set/upVector 0 0 1
@@ -16,7 +16,7 @@
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0 0 0 cm
-/gps/pos/radius 20 cm
+/gps/pos/radius 10 cm
 /gps/ang/type user
 /gps/hist/type theta
 /gps/hist/point 0.0392699 0.092033
@@ -40,6 +40,6 @@
 /gps/hist/point 1.45299 0.033459
 /gps/hist/point 1.53153 0.004855
 /gps/ene/type Mono
-/gps/ene/mono 1 GeV
+/gps/ene/mono 4 GeV
 
 
